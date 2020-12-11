@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Comment, List } from 'antd';
 
 import ChatContext from '../contexts/ChatContext';

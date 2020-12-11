@@ -15,7 +15,7 @@ import ChatForm from './components/ChatForm';
 const { Content, Footer } = Layout;
 
 function App() {
-	const socket = io('http://localhost:4000', {
+	const socket = io(process.env.REACT_APP_BACKEND_ENDPOINT, {
 		upgrade: false,
 		transports: ['websocket'],
 		pingTimeout: 60000,
