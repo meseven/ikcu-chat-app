@@ -6,11 +6,9 @@ import ChatContext from '../contexts/ChatContext';
 function ChatList({ socket }) {
 	const { chats, setChats } = useContext(ChatContext);
 
-	useEffect(() => {
-		socket.on('receive-message', (message) => {
-			setChats([...chats, { message }]);
-		});
-	}, [socket, chats, setChats]);
+	socket.on('receive-message', (message) => {
+		setChats([...chats, { message }]);
+	});
 
 	return (
 		<div>
