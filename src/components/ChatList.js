@@ -1,19 +1,30 @@
-import React from 'react';
-import { Comment, Tooltip, List } from 'antd';
+import React, { useContext, useEffect } from 'react';
+import { Comment, List } from 'antd';
 
-function ChatList() {
+import ChatContext from '../contexts/ChatContext';
+
+function ChatList({ socket }) {
+	const { chats, setChats } = useContext(ChatContext);
+
+	useEffect(() => {
+		socket.on('receive-message', (message) => {
+			setChats([...chats, { message }]);
+		});
+	}, [socket, chats, setChats]);
+
 	return (
 		<div>
 			<List className="comment-list">
-				<Comment
-					// actions={item.actions}
-					author={'Han Solo'}
-					avatar={'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'}
-					content={
-						'We supply a series of design principles, practical patterns and high quality design'
-					}
-					// datetime={item.datetime}
-				/>
+				{chats.map((chat, key) => (
+					<Comment
+						key={key}
+						// actions={item.actions}
+						// author={'Han Solo'}
+						avatar={'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'}
+						content={chat.message}
+						// datetime={item.datetime}
+					/>
+				))}
 			</List>
 		</div>
 	);
