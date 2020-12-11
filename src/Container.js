@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Layout } from 'antd';
+import { Layout, notification } from 'antd';
 
 import ChatContext from './contexts/ChatContext';
 
@@ -10,6 +10,12 @@ import ChatList from './components/ChatList';
 import ChatForm from './components/ChatForm';
 
 const { Content, Footer } = Layout;
+
+const openNotificationWithIcon = (type) => {
+	notification[type]({
+		message: 'A user connected!',
+	});
+};
 
 function Container() {
 	const { setChats } = useContext(ChatContext);
@@ -24,7 +30,8 @@ function Container() {
 
 		subscribeNewUsers((err, message) => {
 			if (err) return;
-			setChats((oldChats) => [{ message, server: true }, ...oldChats]);
+			// setChats((oldChats) => [{ message, server: true }, ...oldChats]);
+			openNotificationWithIcon('success');
 			console.log('bir kullanıcı bağlandı');
 		});
 
