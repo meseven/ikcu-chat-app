@@ -6,10 +6,6 @@ import ChatContext from '../contexts/ChatContext';
 function ChatList({ socket }) {
 	const { chats, setChats } = useContext(ChatContext);
 
-	socket.on('receive-message', (message) => {
-		setChats([...chats, { message }]);
-	});
-
 	return (
 		<div>
 			<List className="comment-list">
