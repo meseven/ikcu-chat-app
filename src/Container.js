@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 
 import ChatContext from './contexts/ChatContext';
 
-import { initiateSocket, disconnectSocket, subscribeToChat } from './socketHook';
+import { initiateSocket, disconnectSocket, subscribeToChat, subscribeNewUsers } from './socketHook';
 
 //components
 import ChatList from './components/ChatList';
@@ -20,6 +20,12 @@ function Container() {
 		subscribeToChat((err, message) => {
 			if (err) return;
 			setChats((oldChats) => [{ message }, ...oldChats]);
+		});
+
+		subscribeNewUsers((err, message) => {
+			if (err) return;
+			setChats((oldChats) => [{ message, server: true }, ...oldChats]);
+			console.log('bir kullanıcı bağlandı');
 		});
 
 		return () => {

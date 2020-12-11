@@ -18,6 +18,14 @@ export const disconnectSocket = () => {
 	if (socket) socket.disconnect();
 };
 
+export const subscribeNewUsers = (cb) => {
+	if (!socket) return true;
+	socket.on('new-user', (msg) => {
+		console.log('Websocket new-user event received!');
+		return cb(null, msg);
+	});
+};
+
 export const subscribeToChat = (cb) => {
 	if (!socket) return true;
 	socket.on('receive-message', (msg) => {
