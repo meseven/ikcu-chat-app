@@ -3,8 +3,8 @@ import { Comment, List } from 'antd';
 
 import ChatContext from '../contexts/ChatContext';
 
-function ChatList({ socket }) {
-	const { chats, setChats } = useContext(ChatContext);
+function ChatList() {
+	const { chats } = useContext(ChatContext);
 
 	return (
 		<div>

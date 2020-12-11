@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from 'react';
-import io from 'socket.io-client';
 import { Layout } from 'antd';
 
 import ChatContext from './contexts/ChatContext';
