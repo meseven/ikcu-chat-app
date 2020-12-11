@@ -25,7 +25,7 @@ function Container() {
 		return () => {
 			disconnectSocket();
 		};
-	}, []);
+	}, [setChats]);
 
 	return (
 		<div>
