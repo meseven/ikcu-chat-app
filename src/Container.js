@@ -1,8 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import io from 'socket.io-client';
 import { Layout } from 'antd';
 
 import ChatContext from './contexts/ChatContext';
+
+import { initiateSocket, disconnectSocket, subscribeToChat } from './socketHook';
 
 //components
 import ChatList from './components/ChatList';
@@ -11,25 +13,19 @@ import ChatForm from './components/ChatForm';
 const { Content, Footer } = Layout;
 
 function Container() {
-	const { chats, setChats } = useContext(ChatContext);
-
-	const [socketRef, setSocketRef] = useState(null);
+	const { setChats } = useContext(ChatContext);
 
 	useEffect(() => {
-		const socket = io(process.env.REACT_APP_BACKEND_ENDPOINT, {
-			upgrade: false,
-			transports: ['websocket'],
-			pingTimeout: 60000,
+		initiateSocket();
+
+		subscribeToChat((err, message) => {
+			if (err) return;
+			setChats((oldChats) => [{ message }, ...oldChats]);
 		});
 
-		socket.on('connect', function (socket) {
-			console.log(socket);
-			setSocketRef(socket);
-		});
-
-		socket.on('receive-message', (message) => {
-			setChats([...chats, { message }]);
-		});
+		return () => {
+			disconnectSocket();
+		};
 	}, []);
 
 	return (
@@ -40,7 +36,9 @@ function Container() {
 						<ChatList />
 					</div>
 				</Content>
-				<Footer style={{ textAlign: 'center' }}>{<ChatForm socket={socketRef} />}</Footer>
+				<Footer style={{ textAlign: 'center' }}>
+					<ChatForm />
+				</Footer>
 			</Layout>
 		</div>
 	);

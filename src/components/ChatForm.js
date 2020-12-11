@@ -4,7 +4,9 @@ import { Input } from 'antd';
 
 import ChatContext from '../contexts/ChatContext';
 
-function ChatForm({ socket }) {
+import { sendMessage } from '../socketHook';
+
+function ChatForm() {
 	const { chats, setChats } = useContext(ChatContext);
 
 	const [message, setMessage] = useState('');
@@ -12,10 +14,11 @@ function ChatForm({ socket }) {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		setMessage('');
-		socket.emit('new-message', message);
-
-		setChats([...chats, { message }]);
+		if (message) {
+			setMessage('');
+			sendMessage(message);
+			setChats([{ message }, ...chats]);
+		}
 	};
 
 	return (
